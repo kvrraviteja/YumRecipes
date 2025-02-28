@@ -19,3 +19,6 @@ RecipeRow - Display the recipe thumbnail image, name and cuisine.
 
 ### ViewModel
 RecipesViewModel - Hosts the bussiness logic to fetch and process recipes. 
+
+### Unit tests
+RecipeTests - Test image cache and recipes source
