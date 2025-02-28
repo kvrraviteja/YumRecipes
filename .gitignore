@@ -1,0 +1,4 @@
+# Xcode files
+DerivedData/
+xcuserdata/
+*.xcworkspace

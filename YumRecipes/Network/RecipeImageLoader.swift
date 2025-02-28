@@ -43,11 +43,13 @@ class RecipeImageCache {
     
     private init() { }
     
-    func image(_ key: URL) -> UIImage? {
+    func image(_ key: URL?) -> UIImage? {
+        guard let key = key else { return nil }
         return cache.object(forKey: key as NSURL)
     }
     
-    func set(_ image: UIImage, key: URL) {
+    func set(_ image: UIImage?, key: URL?) {
+        guard let image = image, let key = key else { return }
         self.cache.setObject(image, forKey: key as NSURL)
     }
 }

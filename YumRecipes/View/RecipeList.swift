@@ -14,7 +14,10 @@ struct RecipeList: View {
     
     var body: some View {
         NavigationView {
-            if viewModel.displayableRecipes.isEmpty {
+            if viewModel.isLoading {
+                ProgressView("Loading recipes..")
+                    .progressViewStyle(CircularProgressViewStyle())
+            } else if viewModel.displayableRecipes.isEmpty {
                 Text(viewModel.errorMessage)
                     .font(.title)
                     .multilineTextAlignment(.center)

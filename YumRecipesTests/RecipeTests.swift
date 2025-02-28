@@ -10,7 +10,7 @@ import SwiftUI
 import XCTest
 @testable import YumRecipes
 
-struct RecipeImageCacheTests {
+struct RecipeTests {
 
     @Test func testImageFoundInCache() {
         let cache = RecipeImageCache.shared

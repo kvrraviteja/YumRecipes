@@ -15,11 +15,18 @@ class RecipesViewModel: ObservableObject {
     
     @Published var displayableRecipes = [RecipeModel]()
     @Published var errorMessage = ""
+    @Published var isLoading = false
 
     let apiManager = RecipesAPIManager()
     var recipes = [RecipeModel]()
 
     func fetchRecipes(_ source: RecipesSource) async throws {
+        await MainActor.run { [weak self] in
+            guard let self = self else { return }
+            self.isLoading = true
+        }
+        
+
         do {
             let recipesModel = try await apiManager.fetchRecipes(source)
             let response = recipesModel.recipes ?? [RecipeModel]()
@@ -31,6 +38,7 @@ class RecipesViewModel: ObservableObject {
                 guard let self = self else { return }
                 self.recipes = response
                 self.displayableRecipes = response
+                self.isLoading = false
             }
         } catch {
             await MainActor.run { [weak self] in
@@ -52,6 +60,8 @@ class RecipesViewModel: ObservableObject {
                 default:
                     self.errorMessage = "Unknown error occurred"
                 }
+                
+                self.isLoading = false
             }
             
             throw error

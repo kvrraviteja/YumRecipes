@@ -12,16 +12,23 @@ enum NetworkManagerError: Error, Equatable {
     case failedToParseResponse
 }
 
-class RecipesNetworkManager {
+protocol RecipesNetworkService {
+    func dataForRequest<T: Decodable>(_ request: URLRequest) async throws -> T
+}
+
+class RecipesNetworkManager: RecipesNetworkService {
     static let shared = RecipesNetworkManager()
+    private let session: URLSession
     
-    private init() { }
+    private init() {
+        session = URLSession.shared
+    }
     
-    func dataForRequest<T>(_ request: URLRequest) async throws -> T where T: Codable {
+    func dataForRequest<T: Decodable>(_ request: URLRequest) async throws -> T {
         let data: Data
         
         do {
-            data = try await URLSession.shared.data(for: request).0
+            data = try await session.data(for: request).0
         } catch {
             throw NetworkManagerError.failedToFetchData
         }
